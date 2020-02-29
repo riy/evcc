@@ -1,0 +1,7 @@
+pmd {
+    toolVersion = '6.21.0'
+    ruleSets = []
+    ruleSetFiles = files("${project.configDir}/pmd/ruleset.xml")
+    rulePriority = 4
+    consoleOutput = true
+}

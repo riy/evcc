@@ -1,0 +1,69 @@
+jacoco {
+    toolVersion = '0.8.5'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+//    afterEvaluate {
+//        classDirectories.from = files(classDirectories.files).asFileTree.matching {
+//            exclude '**/path/to/folder/filename.class'
+//        }
+//    }
+    doFirst {
+        if (!gradle.taskGraph.hasTask(test)) {
+            throw new StopExecutionException()
+        }
+    }
+}
+
+jacocoTestCoverageVerification {
+//    afterEvaluate {
+//        classDirectories.from = files(classDirectories.files).asFileTree.matching {
+//            exclude '**/path/to/folder/filename.class'
+//        }
+//    }
+    violationRules {
+        rule {
+            limit {
+                counter = 'INSTRUCTION'
+                value = 'TOTALCOUNT'
+                minimum = 0.0 // Should be 1.0 if full code coverage is required
+            }
+        }
+
+        rule {
+            element = 'CLASS'
+
+            limit {
+                counter = 'BRANCH'
+                value = 'MISSEDCOUNT'
+                maximum = 100.0 // Should be 0.0 if full code coverage is required
+            }
+        }
+    }
+}
+
+task printCoverageReportLink {
+    onlyIf { jacocoTestCoverageVerification.state.failure }
+    doLast { println "Code coverage is missing. See report at: file://${buildDir}/reports/jacoco/test/html/index.html" }
+}
+
+jacocoTestCoverageVerification.finalizedBy printCoverageReportLink
+
+task verifyCoverage {
+    dependsOn jacocoTestReport
+    onlyIf {
+        gradle.taskGraph.hasTask(test) && gradle.taskGraph.hasTask(jacocoTestReport)
+    }
+}
+
+jacocoTestReport.dependsOn test
+test.finalizedBy jacocoTestCoverageVerification, jacocoTestReport
+check.dependsOn verifyCoverage
+
+task coverage {
+    dependsOn test, verifyCoverage
+}

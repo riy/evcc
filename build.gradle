@@ -1,0 +1,101 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://repo.spring.io/plugins-release" }
+    }
+    dependencies {
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.2.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java-library'
+    id 'checkstyle'
+    id 'pmd'
+    id 'jacoco'
+    id 'com.diffplug.gradle.spotless' version '3.25.0' apply false
+    id 'com.github.spotbugs' version '2.0.1' apply false
+}
+
+apply plugin: 'java-library'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'com.github.spotbugs'
+apply plugin: 'jacoco'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.diffplug.gradle.spotless'
+
+group = 'com.sherzad'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+ext {
+    configDir = "${project.projectDir}/etc/config"
+}
+ext['lombok.version'] = '1.18.12'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation "com.h2database:h2"
+
+    implementation "org.liquibase:liquibase-core"
+
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation "com.google.guava:guava:28.1-jre"
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation "com.h2database:h2"
+
+    testCompileOnly "org.projectlombok:lombok"
+
+    testAnnotationProcessor "org.projectlombok:lombok"
+}
+
+apply from: "${project.rootDir}/gradle/checkstyle.gradle"
+apply from: "${project.rootDir}/gradle/pmd.gradle"
+apply from: "${project.rootDir}/gradle/spotbugs.gradle"
+apply from: "${project.rootDir}/gradle/jacoco.gradle"
+apply from: "${project.rootDir}/gradle/spotless.gradle"
+
+wrapper {
+    gradleVersion = '6.1.1'
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+test {
+    useJUnitPlatform()
+    logging.captureStandardOutput LogLevel.INFO
+    testLogging {
+        showStandardStreams = false // Set 'true' to see more output during tests
+        exceptionFormat "full"
+    }
+}
+
+springBoot {
+    mainClassName = "com.sherzad.evcc.EvccApplication"
+}

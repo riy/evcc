@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="JIRA-4711" author="Rias A. Sherzad" logicalFilePath="db.changelog-v2020-03.xml">
+        <createTable tableName="CLIENT">
+            <column name="ID" type="VARCHAR2(32)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="FIRSTNAME" type="VARCHAR2(50)" />
+            <column name="LASTNAME" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TELEPHONE" type="VARCHAR2(20)" />
+            <column name="EMAIL" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STREET" type="VARCHAR2(50)" />
+            <column name="ZIPCODE" type="VARCHAR2(10)" />
+            <column name="CITY" type="VARCHAR2(50)" />
+            <column name="COUNTRY" type="VARCHAR2(100)" />
+            <column name="STATUS" type="VARCHAR2(8)" />
+        </createTable>
+
+        <createIndex indexName="CLIENT_LASTNAME_ZIPCODE_CITY_COUNTRY" tableName="CLIENT" unique="false">
+            <column name="LASTNAME" type="VARCHAR2(50)"/>
+            <column name="ZIPCODE" type="VARCHAR2(10)" />
+            <column name="CITY" type="VARCHAR2(30)" />
+            <column name="COUNTRY" type="VARCHAR2(30)" />
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

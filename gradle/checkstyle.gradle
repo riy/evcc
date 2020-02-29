@@ -1,0 +1,7 @@
+checkstyle {
+    toolVersion '8.17'
+    configFile = file("${project.configDir}/checkstyle/checkstyle.xml")
+    configProperties = ['suppressionFile': "${project.configDir}/checkstyle/suppressions.xml"]
+    ignoreFailures = false
+    maxWarnings = 0
+}

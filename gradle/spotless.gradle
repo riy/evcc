@@ -1,0 +1,9 @@
+spotless {
+    java {
+        importOrderFile rootProject.file("${project.configDir}/ide/project.importorder")
+        eclipse().configFile rootProject.file("${project.configDir}/ide/eclipse_formatter.xml")
+        target 'src/main/**/*.java', 'src/test/**/*.java'
+        removeUnusedImports()
+        endWithNewline()
+    }
+}

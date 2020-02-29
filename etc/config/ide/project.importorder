@@ -1,0 +1,10 @@
+#Organize Import Order
+#Mon May 16 17:10:40 CEST 2016
+0=java
+1=javax
+2=com
+3=org
+4=org.springframework
+5=
+6=\#org
+7=\#
