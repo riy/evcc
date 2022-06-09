@@ -4,7 +4,7 @@
 
 The purpose of this project is to build a REST-based API that handles Client data. With this application it should be possible to create new clients. A client is identified by the client ID. We should be able to edit first name, last name, telephone number, email address and postal address (providing street, postal code, city and country).
 
-The application was built on Spring Boot and builds with Java 11. It utilizes a couple of Gradle plugins that help with maintaining clean code and following best practices in regard to coding style, code quality and code formatting.
+The application was built on Spring Boot and builds with Java 17. It utilizes a couple of Gradle plugins that help with maintaining clean code and following best practices in regard to coding style, code quality and code formatting.
 
 ### Compiling
 
